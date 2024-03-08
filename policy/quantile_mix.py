@@ -1,5 +1,4 @@
 import torch
-import torch.nn as nn
 import os
 from network.base_net import RNN
 from network.qtran_net import QtranV, QtranQBase
@@ -114,8 +113,6 @@ class QuantileMix:
             u_onehot = u_onehot.cuda()
             u_onehot_next = u_onehot_next.cuda()
         
-        
-       
         individual_q_evals, individual_q_targets, eval_hiddens, target_hiddens = self._get_individual_q(batch, max_episode_len)
         
         individual_q_max = individual_q_evals.max(dim=-1)[0]
@@ -200,8 +197,6 @@ class QuantileMix:
         elif self.args.q_total_type == "joint":
             q_total_target = joint_q_evals
         
-
-        # 
         v_error = self.quantile_regression(q_total_target.detach(), v, self.args.alpha)
         l_v = (v_error* mask).sum() / mask.sum()
         
