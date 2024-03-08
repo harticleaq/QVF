@@ -1,0 +1,9 @@
+Init alg QuantileMix
+Init RolloutWorker
+Run 0, time_steps 0
+Run 0, time_steps 22
+Run 0, time_steps 82
+Run 0, time_steps 105
+Run 0, time_steps 131
+Run 0, time_steps 153
+Run 0, time_steps 175

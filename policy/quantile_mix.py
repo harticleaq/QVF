@@ -130,8 +130,6 @@ class QuantileMix:
         opt_action_target = individual_q_targets.argmax(dim=3, keepdim=True)
         opt_onehot_target = opt_onehot_target.scatter(-1, opt_action_target[:, :].cpu(), 1)
 
-        # ---------------------------------------------L_td-------------------------------------------------------------
-
         if self.args.td_type == "qv":
             joint_q_evals, v, v_next, joint_q_opt = self.get_qtran(batch, eval_hiddens, target_hiddens, opt_onehot_eval)
             y_dqn = r.squeeze(-1) + self.args.gamma * v_next * (1 - terminated.squeeze(-1))
@@ -143,7 +141,6 @@ class QuantileMix:
             # torch.nn.utils.clip_grad_norm_(self.joint_parameters, self.args.grad_norm_clip)
             self.joint_optimizer.step()
 
-            # ---------------------------------------------L_Qi-------------------------------------------------------------
             v_error = self.quantile_regression(joint_q_evals.detach(), v, 0.5)
             l_v = (v_error * mask).sum() / mask.sum()
 
@@ -171,8 +168,7 @@ class QuantileMix:
             l_td.backward()
             # torch.nn.utils.clip_grad_norm_(self.joint_parameters, self.args.grad_norm_clip)
             self.joint_optimizer.step()
-        
-
+          
         q_individual = torch.gather(individual_q_evals, dim=-1, index=u).squeeze(-1)
         if self.args.qmix_type == "mix2":
             agent_id = torch.eye(self.args.n_agents).unsqueeze(0).unsqueeze(0).expand(episode_num, episode_len, -1, -1).to(self.args.device)
@@ -196,14 +192,13 @@ class QuantileMix:
             q_total_target = (r + self.args.gamma * q_total_target * (1 - terminated)).squeeze(-1)
         elif self.args.q_total_type == "joint":
             q_total_target = joint_q_evals
-        
+
+        # ---------------------------------------------L_Qjoint-------------------------------------------------------------
         v_error = self.quantile_regression(q_total_target.detach(), v, self.args.alpha)
         l_v = (v_error* mask).sum() / mask.sum()
         
-        weight = (q_total_target-v)/(q_total_target-v).max()
-        weight = torch.where(weight < 0.1, 0.1, weight).detach()
-        
-        q_error = weight * (q_total_target.detach()- q_total_eval)**2
+        # ---------------------------------------------L_Qi-------------------------------------------------------------  
+        q_error = self.quantile_regression(q_total_target.detach(), q_total_eval, self.args.alpha)
         l_q = (q_error * mask).sum() / mask.sum()
         
         loss = l_q + l_v

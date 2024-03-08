@@ -36,8 +36,10 @@ class Runner:
         self.log_dir = self.run_dir + '/logs'
         if not os.path.exists(self.log_dir):
             os.makedirs(self.log_dir)
-        self.writter = SummaryWriter(self.log_dir)
-
+        if self.args.use_tensorboard:
+            self.writter = SummaryWriter(self.log_dir)
+        else:
+            self.writter = self.ex_run
         self.save_path = self.args.result_dir + '/' + args.alg + '/' + args.env_args["map_name"]
         if not os.path.exists(self.save_path):
             os.makedirs(self.save_path)
@@ -70,11 +72,18 @@ class Runner:
                 mini_batch = self.buffer.sample(min(self.buffer.current_size, self.args.batch_size))
                 train_infos = self.agents.train(mini_batch, train_steps)
                 # log
+                
                 # if train_steps % self.args.log_interval == 0:
-                #     for agent_id in range(self.args.n_agents):
-                #         for k, v in train_infos[agent_id].items():
-                #             agent_k = "agent%i/" % agent_id + k
-                #             self.writter.add_scalars(agent_k, {agent_k: v}, train_steps)
+                    # if self.arg.use_tensorboard:
+                    #     for agent_id in range(self.args.n_agents):
+                    #         for k, v in train_infos[agent_id].items():
+                    #             agent_k = "agent%i/" % agent_id + k
+                    #             self.writter.add_scalars(agent_k, {agent_k: v}, train_steps)
+                    # else:
+                    #     for agent_id in range(self.args.n_agents):
+                    #         for k, v in train_infos[agent_id].items():
+                    #             agent_k = "agent%i/" % agent_id + k
+                    #             self.writter.log_scalar(agent_k, v, train_steps)
                 train_steps += 1
         win_rate, episode_reward = self.evaluate()
         print('win_rate is ', win_rate)

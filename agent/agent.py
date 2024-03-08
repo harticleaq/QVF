@@ -19,6 +19,7 @@ class Agents:
             raise Exception("No such algorithm")
         self.args = args
 
+    # epsilon-greedy policy
     def choose_action(self, obs, last_action, agent_num, avail_actions, epsilon, maven_z=None, evaluate=False):
         inputs = obs.copy()
         avail_actions_ind = np.nonzero(avail_actions)[0]  # index of actions which can be choose
@@ -48,14 +49,12 @@ class Agents:
         # print(f"FLOPs: {flops}, Params: {params}")
 
         # choose action from q value
-        if self.args.alg == 'coma' or self.args.alg == 'central_v' or self.args.alg == 'reinforce':
-            action = self._choose_action_from_softmax(q_value.cpu(), avail_actions, epsilon, evaluate)
+
+        q_value[avail_actions == 0.0] = - float("inf")
+        if np.random.uniform() < epsilon:
+            action = np.random.choice(avail_actions_ind)  # action是一个整数
         else:
-            q_value[avail_actions == 0.0] = - float("inf")
-            if np.random.uniform() < epsilon:
-                action = np.random.choice(avail_actions_ind)  # action是一个整数
-            else:
-                action = torch.argmax(q_value)
+            action = torch.argmax(q_value)
         return action
 
     def _choose_action_from_softmax(self, inputs, avail_actions, epsilon, evaluate=False):
@@ -100,8 +99,7 @@ class Agents:
     def train_v(self, batch, train_step, epsilon=None):
         max_episode_len = self._get_max_episode_len(batch)
         for key in batch.keys():
-            if key != 'z':
-                batch[key] = batch[key][:, :max_episode_len]
+            batch[key] = batch[key][:, :max_episode_len]
         self.policy.learn_v(batch, max_episode_len, train_step, epsilon)
 
 

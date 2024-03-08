@@ -1,0 +1,101 @@
+{
+  "artifacts": [],
+  "command": "my_main",
+  "experiment": {
+    "base_dir": "c:\\haq_project\\GitHub\\QVF",
+    "dependencies": [
+      "munch==2.5.0",
+      "numpy==1.18.5",
+      "PyYAML==6.0",
+      "sacred==0.8.2",
+      "torch==1.13.0+cu116"
+    ],
+    "mainfile": "main.py",
+    "name": "QVF",
+    "repositories": [
+      {
+        "commit": "f88d68ab4ba3f4cd67c8f60b039c1925335c2f59",
+        "dirty": true,
+        "url": "git@github.com:harticleaq/QVF.git"
+      },
+      {
+        "commit": "f88d68ab4ba3f4cd67c8f60b039c1925335c2f59",
+        "dirty": true,
+        "url": "git@github.com:harticleaq/QVF.git"
+      },
+      {
+        "commit": "f88d68ab4ba3f4cd67c8f60b039c1925335c2f59",
+        "dirty": true,
+        "url": "git@github.com:harticleaq/QVF.git"
+      }
+    ],
+    "sources": [
+      [
+        "main.py",
+        "_sources\\main_d95fff03cbf2d70116aa65e1e2296495.py"
+      ],
+      [
+        "runner.py",
+        "_sources\\runner_c27570411151e5cef216a4f405516669.py"
+      ],
+      [
+        "utils\\logging.py",
+        "_sources\\logging_1cb05b1c04930e29d13eb4a3afeb35cf.py"
+      ]
+    ]
+  },
+  "heartbeat": "2024-03-08T03:56:40.686092",
+  "host": {
+    "ENV": {},
+    "cpu": "Unknown",
+    "gpus": {
+      "driver_version": "536.67",
+      "gpus": [
+        {
+          "model": "Quadro RTX 4000",
+          "persistence_mode": false,
+          "total_memory": 8192
+        }
+      ]
+    },
+    "hostname": "anh",
+    "os": [
+      "Windows",
+      "Windows-10-10.0.22621-SP0"
+    ],
+    "python_version": "3.7.12"
+  },
+  "meta": {
+    "command": "my_main",
+    "options": {
+      "--beat-interval": null,
+      "--capture": null,
+      "--comment": null,
+      "--debug": false,
+      "--enforce_clean": false,
+      "--file_storage": null,
+      "--force": false,
+      "--help": false,
+      "--loglevel": null,
+      "--mongo_db": null,
+      "--name": null,
+      "--pdb": false,
+      "--print-config": false,
+      "--priority": null,
+      "--queue": false,
+      "--s3": null,
+      "--sql": null,
+      "--tiny_db": null,
+      "--unobserved": false,
+      "COMMAND": null,
+      "UPDATE": [],
+      "help": false,
+      "with": false
+    }
+  },
+  "resources": [],
+  "result": null,
+  "start_time": "2024-03-08T03:56:09.359662",
+  "status": "INTERRUPTED",
+  "stop_time": "2024-03-08T03:56:40.688089"
+}

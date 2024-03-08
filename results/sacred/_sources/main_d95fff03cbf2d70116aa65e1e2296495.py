@@ -87,9 +87,9 @@ if __name__ == "__main__":
     if not os.path.exists(model_path):
         os.makedirs(model_path)
     config["model_path"] = model_path
-    ex.observers.append(MongoObserver.create("mongodb://192.168.1.102:27017", "sacred"))
+    # ex.observers.append(MongoObserver.create("mongodb://192.168.1.102:27017", "sacred"))
     maps = ["5m_vs_6m", "3s5z"]
-    # maps = ["3m"]
+    maps = ["3m"]
     for i in range(len(maps)):
         start_proc(config, maps[i])
 
