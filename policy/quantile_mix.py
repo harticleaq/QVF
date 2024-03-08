@@ -202,7 +202,7 @@ class QuantileMix:
         
 
         # 
-        v_error = self.quantile_regression(q_total_target.detach(), v, 0.8)
+        v_error = self.quantile_regression(q_total_target.detach(), v, self.args.alpha)
         l_v = (v_error* mask).sum() / mask.sum()
         
         weight = (q_total_target-v)/(q_total_target-v).max()
